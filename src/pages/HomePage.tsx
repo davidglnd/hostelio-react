@@ -1,6 +1,7 @@
 import { ChartNoAxesCombined, Clock, NotepadText, ReceiptEuro } from "lucide-react"
 
-import { SummaryCard } from "@/components/SummaryCard"
+import { SummaryCard } from "@/features/dashboard/components/SummaryCard"
+import { RecentActivity } from "@/features/dashboard/components/RecentActivity"
 
 export const HomePage = () => {
     return (
@@ -17,6 +18,7 @@ export const HomePage = () => {
                 <SummaryCard title="Comparativa mensual" value="10" description="Frente al mes anterior" trend="up" icon={ChartNoAxesCombined} />
             </div>
             <div className="h-px bg-gray-700" />
+            <RecentActivity />
         </div>
     )
 }
