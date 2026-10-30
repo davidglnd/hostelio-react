@@ -15,8 +15,8 @@ export const ActivityItem = ({ supplier, category, date, amount, status, icon }:
             </div>
             <div className="flex flex-col items-end">
                 <p className="font-semibold text-gray-50">
-                    - {
-                        new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(amount)
+                    {
+                        new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(-amount)
                     }
                 </p>
                 {

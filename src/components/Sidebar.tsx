@@ -12,11 +12,18 @@ const buttonOptions = [
 
 ]
 
-
-export const Sidebar = () => {
+interface SidebarProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
     return (
-        <div className="w-64 bg-gray-900 flex flex-col">
+        <div
+            className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 flex flex-col transition-transform duration-300
+                        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+                        md:static md:translate-x-0`}
+        >
             <nav className="flex flex-col gap-3 justify-start p-2">
                 {
                     buttonOptions.map((option) => (
@@ -27,7 +34,7 @@ export const Sidebar = () => {
                             )
                             + " text-gray-300 w-full justify-start transition-colors font-normal rounded-md cursor-pointer px-3 py-4 flex items-center gap-2 "
                         }
-                            key={option.id}>
+                            key={option.id} onClick={onClose}>
                             <option.icon />
                             {option.name}
                         </NavLink>
@@ -37,7 +44,7 @@ export const Sidebar = () => {
             <div className="h-px bg-gray-700 mx-2" />
             <nav className="flex flex-col gap-3 justify-start p-2 mt-auto">
                 <div className="h-px bg-gray-700 mx-2" />
-                <NavLink to="/configuracion" className={({ isActive }) =>
+                <NavLink to="/configuracion" onClick={onClose} className={({ isActive }) =>
                     (isActive
                         ? "bg-red-800 text-gray-300"
                         : "bg-transparent text-gray-300 hover:bg-gray-700 hover:text-gray-100 "
