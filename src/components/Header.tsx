@@ -1,12 +1,20 @@
-import { Bell, Hamburger, Store, UserRound } from "lucide-react"
-
-export const Header = () => {
+import { Bell, Hamburger, Store, UserRound, Menu } from "lucide-react"
+interface HeaderProps {
+    onMenuClick: () => void;
+}export const Header = ({ onMenuClick }: HeaderProps) => {
     return (
-        <div className="w-full bg-gray-900 flex flex-col ">
-            <div className="flex flex-row gap-2 items-center p-2">
+        <div className="w-full bg-gray-900 flex flex-col">
+            <div className="flex flex-row gap-2 items-center p-2 ">
+                <button
+                    onClick={onMenuClick}
+                    className="bg-gray-700 rounded-md p-2 cursor-pointer md:hidden"
+                >
+                    <Menu className="text-gray-50" />
+                </button>
                 <div className="bg-gray-700 rounded-md p-2">
                     <Hamburger className="text-amber-400" />
                 </div>
+
 
                 <div className="flex flex-col">
                     <p className="font-bold text-2xl text-gray-50">Hostelio</p>
