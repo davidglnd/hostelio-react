@@ -3,7 +3,7 @@ import type { Activity } from "../types/activity.types";
 export const ActivityItem = ({ supplier, category, date, amount, status, icon }: Omit<Activity, "id">) => {
     const Icon = icon;
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
                 <div className="rounded-full bg-gray-700 p-3 flex items-center justify-center ">
                     <Icon className="text-amber-400" size={20} />
@@ -13,7 +13,7 @@ export const ActivityItem = ({ supplier, category, date, amount, status, icon }:
                     <p className="text-sm text-gray-400">{category} · {date}</p>
                 </div>
             </div>
-            <div className="flex flex-col items-end">
+            <div className="flex flex-row items-center justify-between gap-3 sm:flex-col sm:items-end">
                 <p className="font-semibold text-gray-50">
                     {
                         new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(-amount)
