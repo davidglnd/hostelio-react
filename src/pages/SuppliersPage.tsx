@@ -1,21 +1,34 @@
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { SuppliersFormDialog } from "@/features/suppliers/components/SuppliersFormDialog";
 import { SuppliersTable } from "@/features/suppliers/components/SuppliersTable";
 
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { mockSuppliers } from "@/features/suppliers/data/mockSuppliers";
 import type { Supplier } from "@/features/suppliers/types/supplier.types";
 
 export const SuppliersPage = () => {
     const [suppliers, setSuppliers] = useState<Supplier[]>(mockSuppliers);
+    const [searchTerm, setSearchTerm] = useState("");
     const handleAddSupplier = (newSupplier: Supplier) => {
         setSuppliers((prevSuppliers) => [...prevSuppliers, newSupplier]);
     };
+    const filteredSuppliers = suppliers.filter((supplier) =>
+        supplier.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+    );
+    const toggleState = (id: string) => {
+        const newSuppliers = suppliers.map((supplier) => {
+            return supplier.id === id
+                ? { ...supplier, isActive: !supplier.isActive }
+                : supplier
+        }
+        )
+        setSuppliers(newSuppliers);
+    }
+
     return (
         <div className="p-8 space-y-6">
             <div>
@@ -31,15 +44,21 @@ export const SuppliersPage = () => {
                     <Input
                         placeholder="Buscar proveedor..."
                         className="pl-10 "
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+
                     />
                 </div>
-                {/* <Button className="bg-amber-400 text-gray-900 hover:bg-amber-500">
-                    <Plus size={18} />
-                    Nuevo proveedor
-                </Button> */}
                 <SuppliersFormDialog handleAddSupplier={handleAddSupplier} />
+
             </div>
-            <SuppliersTable suppliers={suppliers} />
+            {
+                suppliers.length === 0
+                    ? <p className="text-gray-400">No hay proveedores añadidos aún.</p>
+                    : filteredSuppliers.length === 0
+                        ? <p className="text-gray-400">No hay proveedores relacionados con tu búsqueda.</p>
+                        : <SuppliersTable suppliers={filteredSuppliers} toggleState={toggleState} />
+            }
         </div>
     )
 }

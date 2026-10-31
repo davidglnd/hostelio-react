@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import type { Supplier } from "../types/supplier.types";
-
+import { Plus } from "lucide-react";
 interface SuppliersFormDialogProps {
     handleAddSupplier: (supplier: Supplier) => void;
 }
@@ -44,7 +44,9 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
             <DialogContent className="bg-gray-800 border-gray-700 text-gray-50">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <DialogHeader>
-                        <DialogTitle >Nuevo proveedor</DialogTitle>
+                        <DialogTitle >
+                            Nuevo proveedor
+                        </DialogTitle>
                         <DialogDescription className="text-gray-400">Introduce los datos del proveedor que quieres añadir a tu negocio.</DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-4">
@@ -91,10 +93,13 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
                 </form>
             </DialogContent>
             <DialogTrigger
-                render={<Button variant="default" />}
-            >
-                Nuevo proveedor
-            </DialogTrigger>
+                render={
+                    <Button variant="default" >
+                        <Plus size={18} />
+                        Nuevo proveedor
+                    </Button>
+                }
+            />
         </Dialog>
     )
 }

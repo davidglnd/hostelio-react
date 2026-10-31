@@ -20,9 +20,10 @@ import { EllipsisVertical, Pencil, UserX, UserCheck } from "lucide-react";
 import type { Supplier } from "../types/supplier.types";
 
 interface SuppliersTableProps {
-    suppliers: Supplier[];
+    suppliers: Supplier[],
+    toggleState: (id: string) => void;
 }
-export const SuppliersTable = (data: SuppliersTableProps) => {
+export const SuppliersTable = ({ suppliers, toggleState }: SuppliersTableProps) => {
     return (
         <Table>
             <TableHeader>
@@ -36,7 +37,7 @@ export const SuppliersTable = (data: SuppliersTableProps) => {
             </TableHeader>
             <TableBody>
                 {
-                    data.suppliers.map((supplier) =>
+                    suppliers.map((supplier) =>
                         <TableRow key={supplier.id} className="hover:bg-transparent">
                             <TableCell>{supplier.name}</TableCell>
                             <TableCell>{supplier.phone || "—"}</TableCell>
@@ -65,7 +66,7 @@ export const SuppliersTable = (data: SuppliersTableProps) => {
                                             Editar
                                         </DropdownMenuItem>
 
-                                        <DropdownMenuItem className="focus:bg-gray-700 focus:text-gray-50  hover:cursor-pointer">
+                                        <DropdownMenuItem className="focus:bg-gray-700 focus:text-gray-50  hover:cursor-pointer" onClick={() => toggleState(supplier.id)}>
                                             {supplier.isActive ? <UserX /> : <UserCheck />}
                                             {supplier.isActive ? "Desactivar" : "Activar"}
                                         </DropdownMenuItem>
@@ -76,6 +77,6 @@ export const SuppliersTable = (data: SuppliersTableProps) => {
                     )
                 }
             </TableBody>
-        </Table>
+        </Table >
     );
 };
