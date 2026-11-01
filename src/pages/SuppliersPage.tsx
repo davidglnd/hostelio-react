@@ -44,6 +44,9 @@ export const SuppliersPage = () => {
         })
         setSuppliers(updatedList);
     }
+    const handleNewSupplier = () => {
+        setSelectedSupplier(null);
+    }
     return (
         <div className="p-8 space-y-6">
             <div>
@@ -64,7 +67,9 @@ export const SuppliersPage = () => {
 
                     />
                 </div>
-                <SuppliersFormDialog handleAddSupplier={handleAddSupplier} selectedSupplier={selectedSupplier} onOpenChange={setDialogOpen} dialogOpen={dialogOpen} updateList={updateList} />
+                <SuppliersFormDialog handleAddSupplier={handleAddSupplier} selectedSupplier={selectedSupplier}
+                    onOpenChange={setDialogOpen} dialogOpen={dialogOpen} updateList={updateList} handleNewSupplier={handleNewSupplier}
+                />
 
             </div>
             {

@@ -15,16 +15,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import type { Supplier } from "../types/supplier.types";
 import { Plus } from "lucide-react";
+
+import type { Supplier } from "../types/supplier.types";
+
 interface SuppliersFormDialogProps {
     handleAddSupplier: (supplier: Supplier) => void,
     selectedSupplier: Supplier | null,
     dialogOpen: boolean,
     onOpenChange: (open: boolean) => void,
     updateList: (supplier: Supplier) => void,
+    handleNewSupplier: () => void,
 }
-export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialogOpen, onOpenChange, updateList }: SuppliersFormDialogProps) => {
+export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialogOpen, onOpenChange, updateList, handleNewSupplier }: SuppliersFormDialogProps) => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -60,9 +63,19 @@ export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialo
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <DialogHeader>
                         <DialogTitle >
-                            Nuevo proveedor
+                            {
+                                selectedSupplier != null
+                                    ? "Editar proveedor."
+                                    : "Nuevo proveedor."
+                            }
                         </DialogTitle>
-                        <DialogDescription className="text-gray-400">Introduce los datos del proveedor que quieres añadir a tu negocio.</DialogDescription>
+                        <DialogDescription className="text-gray-400">
+                            {
+                                selectedSupplier != null
+                                    ? "Revise y cambie los datos del proveedor que quiere modificar."
+                                    : "Introduce los datos del proveedor que quieres añadir a tu negocio."
+                            }
+                        </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
@@ -129,7 +142,7 @@ export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialo
             </DialogContent>
             <DialogTrigger
                 render={
-                    <Button variant="default" >
+                    <Button variant="default" onClick={handleNewSupplier}>
                         <Plus size={18} />
                         Nuevo proveedor
                     </Button>
