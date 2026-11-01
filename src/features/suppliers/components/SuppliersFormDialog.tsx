@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { type FormEvent } from "react";
 
 import {
     Dialog,
@@ -18,10 +18,13 @@ import { Label } from "@/components/ui/label";
 import type { Supplier } from "../types/supplier.types";
 import { Plus } from "lucide-react";
 interface SuppliersFormDialogProps {
-    handleAddSupplier: (supplier: Supplier) => void;
+    handleAddSupplier: (supplier: Supplier) => void,
+    selectedSupplier: Supplier | null,
+    dialogOpen: boolean,
+    onOpenChange: (open: boolean) => void,
+    updateList: (supplier: Supplier) => void,
 }
-export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogProps) => {
-    const [isOpen, setIsOpen] = useState(false)
+export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialogOpen, onOpenChange, updateList }: SuppliersFormDialogProps) => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -29,18 +32,30 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
         if (!name) {
             return;
         }
-        const newSupplier: Supplier = {
-            name: name,
-            phone: String(formData.get('phone') ?? "").trim(),
-            email: String(formData.get('email') ?? "").trim(),
-            isActive: true,
-            id: crypto.randomUUID(),
+        if (selectedSupplier === null) {
+            const newSupplier: Supplier = {
+                name: name,
+                phone: String(formData.get('phone') ?? "").trim(),
+                email: String(formData.get('email') ?? "").trim(),
+                isActive: true,
+                id: crypto.randomUUID(),
+            }
+            handleAddSupplier(newSupplier);
+        } else {
+            const editedSupplier: Supplier = {
+                name: name,
+                phone: String(formData.get('phone') ?? "").trim(),
+                email: String(formData.get('email') ?? "").trim(),
+                isActive: selectedSupplier.isActive,
+                id: selectedSupplier.id,
+            }
+            updateList(editedSupplier);
         }
-        handleAddSupplier(newSupplier);
-        setIsOpen(false)
+
+        onOpenChange(false)
     }
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={dialogOpen} onOpenChange={onOpenChange}>
             <DialogContent className="bg-gray-800 border-gray-700 text-gray-50">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <DialogHeader>
@@ -57,8 +72,14 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
                                 type="text"
                                 name="name"
                                 placeholder="Ej. Bebidas Granadinas"
+                                defaultValue={
+                                    selectedSupplier != null
+                                        ? selectedSupplier.name
+                                        : ""
+                                }
                                 required
                             />
+
 
                         </div>
                         <div className="flex flex-col gap-2">
@@ -68,6 +89,11 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
                                 type="tel"
                                 name="phone"
                                 placeholder="611 222 111"
+                                defaultValue={
+                                    selectedSupplier != null
+                                        ? selectedSupplier.phone
+                                        : ""
+                                }
                             />
                         </div>
                         <div className="flex flex-col gap-2">
@@ -77,6 +103,11 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
                                 type="email"
                                 name="email"
                                 placeholder="ejemplo@ejemplo.com"
+                                defaultValue={
+                                    selectedSupplier != null
+                                        ? selectedSupplier.email
+                                        : ""
+                                }
                             />
                         </div>
 
@@ -87,7 +118,11 @@ export const SuppliersFormDialog = ({ handleAddSupplier }: SuppliersFormDialogPr
                         </DialogClose>
 
                         <Button type="submit">
-                            Guardar proveedor
+                            {
+                                selectedSupplier != null
+                                    ? "Guardar cambios"
+                                    : "Guardar nuevo proveedor"
+                            }
                         </Button>
                     </DialogFooter>
                 </form>

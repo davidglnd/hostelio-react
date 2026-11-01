@@ -21,9 +21,10 @@ import type { Supplier } from "../types/supplier.types";
 
 interface SuppliersTableProps {
     suppliers: Supplier[],
-    toggleState: (id: string) => void;
+    toggleState: (id: string) => void,
+    handleEditSupplier: (supplier: Supplier) => void
 }
-export const SuppliersTable = ({ suppliers, toggleState }: SuppliersTableProps) => {
+export const SuppliersTable = ({ suppliers, toggleState, handleEditSupplier }: SuppliersTableProps) => {
     return (
         <Table>
             <TableHeader>
@@ -61,7 +62,7 @@ export const SuppliersTable = ({ suppliers, toggleState }: SuppliersTableProps) 
                                         align="end"
                                         className="bg-gray-800 border-gray-700 text-gray-50 "
                                     >
-                                        <DropdownMenuItem className="focus:bg-gray-700 focus:text-gray-50  hover:cursor-pointer ">
+                                        <DropdownMenuItem className="focus:bg-gray-700 focus:text-gray-50  hover:cursor-pointer " onClick={() => handleEditSupplier(supplier)}>
                                             <Pencil />
                                             Editar
                                         </DropdownMenuItem>

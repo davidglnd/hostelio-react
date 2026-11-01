@@ -13,6 +13,9 @@ import type { Supplier } from "@/features/suppliers/types/supplier.types";
 export const SuppliersPage = () => {
     const [suppliers, setSuppliers] = useState<Supplier[]>(mockSuppliers);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
+
     const handleAddSupplier = (newSupplier: Supplier) => {
         setSuppliers((prevSuppliers) => [...prevSuppliers, newSupplier]);
     };
@@ -29,6 +32,18 @@ export const SuppliersPage = () => {
         setSuppliers(newSuppliers);
     }
 
+    const handleEditSupplier = (supplier: Supplier) => {
+        setSelectedSupplier(supplier);
+        setDialogOpen(true);
+    }
+    const updateList = (updatedSupplier: Supplier) => {
+        const updatedList = suppliers.map((supplier) => {
+            return supplier.id === updatedSupplier.id
+                ? updatedSupplier
+                : supplier
+        })
+        setSuppliers(updatedList);
+    }
     return (
         <div className="p-8 space-y-6">
             <div>
@@ -49,7 +64,7 @@ export const SuppliersPage = () => {
 
                     />
                 </div>
-                <SuppliersFormDialog handleAddSupplier={handleAddSupplier} />
+                <SuppliersFormDialog handleAddSupplier={handleAddSupplier} selectedSupplier={selectedSupplier} onOpenChange={setDialogOpen} dialogOpen={dialogOpen} updateList={updateList} />
 
             </div>
             {
@@ -57,7 +72,7 @@ export const SuppliersPage = () => {
                     ? <p className="text-gray-400">No hay proveedores añadidos aún.</p>
                     : filteredSuppliers.length === 0
                         ? <p className="text-gray-400">No hay proveedores relacionados con tu búsqueda.</p>
-                        : <SuppliersTable suppliers={filteredSuppliers} toggleState={toggleState} />
+                        : <SuppliersTable suppliers={filteredSuppliers} toggleState={toggleState} handleEditSupplier={handleEditSupplier} />
             }
         </div>
     )
