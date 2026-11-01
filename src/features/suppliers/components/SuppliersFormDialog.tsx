@@ -1,0 +1,153 @@
+import { type FormEvent } from "react";
+
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+    DialogClose,
+} from "@/components/ui/dialog";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { Plus } from "lucide-react";
+
+import type { Supplier } from "../types/supplier.types";
+
+interface SuppliersFormDialogProps {
+    handleAddSupplier: (supplier: Supplier) => void,
+    selectedSupplier: Supplier | null,
+    dialogOpen: boolean,
+    onOpenChange: (open: boolean) => void,
+    updateList: (supplier: Supplier) => void,
+    handleNewSupplier: () => void,
+}
+export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialogOpen, onOpenChange, updateList, handleNewSupplier }: SuppliersFormDialogProps) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const name = String(formData.get('name') ?? "").trim()
+        if (!name) {
+            return;
+        }
+        if (selectedSupplier === null) {
+            const newSupplier: Supplier = {
+                name: name,
+                phone: String(formData.get('phone') ?? "").trim(),
+                email: String(formData.get('email') ?? "").trim(),
+                isActive: true,
+                id: crypto.randomUUID(),
+            }
+            handleAddSupplier(newSupplier);
+        } else {
+            const editedSupplier: Supplier = {
+                name: name,
+                phone: String(formData.get('phone') ?? "").trim(),
+                email: String(formData.get('email') ?? "").trim(),
+                isActive: selectedSupplier.isActive,
+                id: selectedSupplier.id,
+            }
+            updateList(editedSupplier);
+        }
+
+        onOpenChange(false)
+    }
+    return (
+        <Dialog open={dialogOpen} onOpenChange={onOpenChange}>
+            <DialogContent className="bg-gray-800 border-gray-700 text-gray-50">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <DialogHeader>
+                        <DialogTitle >
+                            {
+                                selectedSupplier != null
+                                    ? "Editar proveedor."
+                                    : "Nuevo proveedor."
+                            }
+                        </DialogTitle>
+                        <DialogDescription className="text-gray-400">
+                            {
+                                selectedSupplier != null
+                                    ? "Revise y cambie los datos del proveedor que quiere modificar."
+                                    : "Introduce los datos del proveedor que quieres añadir a tu negocio."
+                            }
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="supplier-name">Nombre del proveedor *</Label>
+                            <Input
+                                id="supplier-name"
+                                type="text"
+                                name="name"
+                                placeholder="Ej. Bebidas Granadinas"
+                                defaultValue={
+                                    selectedSupplier != null
+                                        ? selectedSupplier.name
+                                        : ""
+                                }
+                                required
+                            />
+
+
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="phone-name">Telefono del proveedor</Label>
+                            <Input
+                                id="phone-name"
+                                type="tel"
+                                name="phone"
+                                placeholder="611 222 111"
+                                defaultValue={
+                                    selectedSupplier != null
+                                        ? selectedSupplier.phone
+                                        : ""
+                                }
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="email-name">Email del proveedor</Label>
+                            <Input
+                                id="email-name"
+                                type="email"
+                                name="email"
+                                placeholder="ejemplo@ejemplo.com"
+                                defaultValue={
+                                    selectedSupplier != null
+                                        ? selectedSupplier.email
+                                        : ""
+                                }
+                            />
+                        </div>
+
+                    </div>
+                    <DialogFooter className="bg-gray-800 border-gray-700 text-gray-50">
+                        <DialogClose render={<Button variant="outline" className="bg-transparent border-gray-600 text-gray-200 hover:bg-gray-700 hover:text-white hover:cursor-pointer" />}>
+                            Cancelar
+                        </DialogClose>
+
+                        <Button type="submit">
+                            {
+                                selectedSupplier != null
+                                    ? "Guardar cambios"
+                                    : "Guardar nuevo proveedor"
+                            }
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+            <DialogTrigger
+                render={
+                    <Button variant="default" onClick={handleNewSupplier}>
+                        <Plus size={18} />
+                        Nuevo proveedor
+                    </Button>
+                }
+            />
+        </Dialog>
+    )
+}
