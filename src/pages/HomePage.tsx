@@ -4,8 +4,51 @@ import { SummaryCard } from "@/features/dashboard/components/SummaryCard"
 import { RecentActivity } from "@/features/dashboard/components/RecentActivity"
 import { TopSuppliers } from "@/features/dashboard/components/TopSuppliers"
 
+import { mockSuppliers } from "@/features/suppliers/data/mockSuppliers"
+import { mockExpenses } from "@/features/expenses/data/mockExpenses"
+
 export const HomePage = () => {
     const mockAmount = 10000;
+    const expensesData = [...mockExpenses];
+    const suppliersData = mockSuppliers;
+    /*Recent activity*/
+    const orderedExpenses = expensesData.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
+    }).slice(0, 5);
+    const recentExpenses = orderedExpenses.map((expense) => ({
+        ...expense,
+        supplierName: suppliersData.find((supplier) => supplier.id === expense.supplierId)?.name ?? "Proveedor desconocido",
+    }));
+    /*Top suppliers*/
+    const date = new Date();
+    const currentMonthExpenses = expensesData.filter((expense) => new Date(expense.date).getMonth() === date.getMonth()
+        && new Date(expense.date).getFullYear() === date.getFullYear());
+
+    const totalsBySupplier = currentMonthExpenses.reduce<Record<string, number>>(
+        (acc, expense) => {
+            acc[expense.supplierId] =
+                (acc[expense.supplierId] ?? 0) + expense.amount;
+
+            return acc;
+        },
+        {}
+    );
+    const supplierTotals = Object.entries(totalsBySupplier).map(([supplierId, total]) => {
+        return {
+            supplierId: supplierId,
+            totalAmount: total,
+            supplierName: suppliersData.find((supplier) => supplierId === supplier.id)?.name ?? "Proveedor desconocido",
+        }
+    });
+    const topSuppliers = supplierTotals.sort((a, b) => b.totalAmount - a.totalAmount).slice(0, 5);
+    /*Utils */
+    const monthlyTotal = currentMonthExpenses.reduce(
+        (total, expense) => total + expense.amount,
+        0
+    );
+
     return (
         <div className="p-8 space-y-6">
             <div>
@@ -22,10 +65,10 @@ export const HomePage = () => {
             <div className="h-px bg-gray-700" />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                    <RecentActivity />
+                    <RecentActivity expensesData={recentExpenses} />
                 </div>
                 <div>
-                    <TopSuppliers />
+                    <TopSuppliers topSuppliers={topSuppliers} monthlyTotal={monthlyTotal} />
                 </div>
             </div>
         </div>
