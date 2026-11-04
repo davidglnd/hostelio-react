@@ -20,4 +20,14 @@ export const mockSuppliers: Supplier[] = [
         name: "Cárnicas del sur",
         isActive: false,
     },
+    {
+        id: "sup-004",
+        name: "Proveedor sin gastos",
+        isActive: true,
+    },
+    {
+        id: "sup-005",
+        name: "Limpiezas Sierra",
+        isActive: true,
+    },
 ];
