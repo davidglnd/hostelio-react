@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
+import { useExpenses } from "@/features/expenses/hooks/useExpenses";
 import { mockSuppliers } from "@/features/suppliers/data/mockSuppliers"
-import { mockExpenses } from "@/features/expenses/data/mockExpenses"
 import { ExpensesTable } from "@/features/expenses/components/ExpensesTable";
 import { ExpensesFilters } from "@/features/expenses/components/ExpensesFilters";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,9 @@ export const ExpensesPage = () => {
 const ExpensesContent = ({ supplierId }: { supplierId: string | null }) => {
     const [paymentStatusFilter, setPaymentStatusFilter] = useState<"all" | "pending" | "paid">("all");
     const [pageTable, setPageTable] = useState<number>(1);
+    const { expenses } = useExpenses();
     const suppliersData = mockSuppliers;
-    const expensesData = mockExpenses.map((expense) => ({
+    const expensesData = expenses.map((expense) => ({
         ...expense,
         supplierName: suppliersData.find((supplier) => supplier.id === expense.supplierId)?.name ?? "Proveedor desconocido",
     }))
@@ -45,6 +46,7 @@ const ExpensesContent = ({ supplierId }: { supplierId: string | null }) => {
     });
     const totalPages = Math.ceil(paymentStatusFilteredExpenses.length / 10);
     const paginatedExpenses = paymentStatusFilteredExpenses.slice((pageTable - 1) * 10, pageTable * 10);
+
     const handlePaymentStatusChange = (paymentStatusFilter: "all" | "paid" | "pending") => {
         setPageTable(1);
         setPaymentStatusFilter(paymentStatusFilter);

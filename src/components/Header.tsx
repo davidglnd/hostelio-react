@@ -1,4 +1,5 @@
 import { Bell, Hamburger, Store, UserRound, Menu } from "lucide-react"
+import { Badge } from "./ui/badge";
 interface HeaderProps {
     onMenuClick: () => void;
 }export const Header = ({ onMenuClick }: HeaderProps) => {
@@ -36,8 +37,8 @@ interface HeaderProps {
                     <Store className="text-gray-400" />
                     <p className="text-sm text-gray-200">Nombre establecimiento</p>
                 </div>
-                <div className="flex flex-row items-center ml-auto ">
-                    <p className="text-sm p-1 text-green-900 bg-green-300 rounded-full">Admin</p>
+                <div className="flex flex-row items-center ml-auto gap-2">
+                    <Badge className="p-3 text-green-900 bg-green-300">Admin</Badge>
                 </div>
             </div>
             <div className="h-px bg-gray-700" />

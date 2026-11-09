@@ -5,14 +5,14 @@ import { RecentActivity } from "@/features/dashboard/components/RecentActivity"
 import { TopSuppliers } from "@/features/dashboard/components/TopSuppliers"
 
 import { mockSuppliers } from "@/features/suppliers/data/mockSuppliers"
-import { mockExpenses } from "@/features/expenses/data/mockExpenses"
+import { useExpenses } from "@/features/expenses/hooks/useExpenses"
 
 export const HomePage = () => {
     const mockAmount = 10000;
-    const expensesData = [...mockExpenses];
+    const { expenses: expensesData } = useExpenses();
     const suppliersData = mockSuppliers;
     /*Recent activity*/
-    const orderedExpenses = expensesData.sort((a, b) => {
+    const orderedExpenses = [...expensesData].sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         return dateB.getTime() - dateA.getTime();

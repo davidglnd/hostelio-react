@@ -4,11 +4,13 @@ import { Outlet } from "react-router"
 import { Header } from "../components/Header"
 import { Sidebar } from "../components/Sidebar"
 
+import { ExpensesProvider } from "@/features/expenses/context/ExpensesProvider"
+
 export const MainLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <>
+        <ExpensesProvider>
             <div className="flex flex-col w-full h-screen">
                 <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
                 {isSidebarOpen && (
@@ -28,6 +30,6 @@ export const MainLayout = () => {
                 </div>
             </div>
 
-        </>
+        </ExpensesProvider>
     )
 }
