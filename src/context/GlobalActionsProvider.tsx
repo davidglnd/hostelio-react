@@ -4,8 +4,12 @@ import { ExpensesFormDialog } from "@/features/expenses/components/ExpensesFormD
 
 import { mockSuppliers } from "@/features/suppliers/data/mockSuppliers";
 
+import { useExpenses } from "@/features/expenses/hooks/useExpenses";
+
 export const GlobalActionsProvider = ({ children }: PropsWithChildren) => {
     const [activeDialog, setActiveDialog] = useState<"newExpense" | null>(null);
+
+    const { addExpense } = useExpenses();
 
     const activeSuppliers = mockSuppliers.filter((supplier) => supplier.isActive);
 
@@ -23,7 +27,7 @@ export const GlobalActionsProvider = ({ children }: PropsWithChildren) => {
             closeDialog: closeDialog,
         }}>
             {children}
-            <ExpensesFormDialog openDialog={activeDialog === "newExpense"} onClose={closeDialog} suppliers={activeSuppliers} />
+            <ExpensesFormDialog openDialog={activeDialog === "newExpense"} onClose={closeDialog} onSave={addExpense} suppliers={activeSuppliers} />
         </GlobalActionsContext>
     )
 }
