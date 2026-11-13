@@ -7,8 +7,8 @@ interface ExpensesFiltersProps {
 export const ExpensesFilters = ({ paymentStatusFilter, changePaymentStatusFilter }: ExpensesFiltersProps) => {
     return (
         <div>
-            <div>
-                <p>Estado de pago</p>
+            <div className="flex flex-col gap-2">
+                <p className="text-sm text-gray-400">Estado de pago</p>
                 <nav>
                     <ToggleGroup value={[paymentStatusFilter]} onValueChange={
                         (values) => {

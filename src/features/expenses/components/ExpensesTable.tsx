@@ -17,7 +17,7 @@ interface ExpensesTableProps {
 
 export const ExpensesTable = ({ expensesData }: ExpensesTableProps) => {
     return (
-        <Table>
+        <Table className="bg-gray-800 rounded-2xl text-gray-950">
             <TableHeader>
                 <TableRow className="hover:bg-transparent">
                     <TableHead className="text-gray-300">Proveedor</TableHead>

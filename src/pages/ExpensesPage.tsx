@@ -57,6 +57,7 @@ const ExpensesContent = ({ supplierId }: { supplierId: string | null }) => {
                 supplierId === null
                     ? <div>
                         <h1 className="text-2xl font-bold text-gray-50">Gastos</h1>
+                        <div className="h-px bg-gray-700" />
                     </div>
                     : supplierName === undefined
                         ? <h1 className="text-2xl font-bold text-gray-50">Proveedor no encontrado</h1>
@@ -65,7 +66,7 @@ const ExpensesContent = ({ supplierId }: { supplierId: string | null }) => {
                             <p className="text-gray-400 text-sm">Gastos del proveedor.</p>
                         </div>
             }
-            <div className="p-4 ">
+            <div className="p-4 bg-gray-800 border-gray-700 border rounded-xl">
                 <p>Herramientas de filtrado</p>
                 <ExpensesFilters paymentStatusFilter={paymentStatusFilter} changePaymentStatusFilter={handlePaymentStatusChange}></ExpensesFilters>
             </div>

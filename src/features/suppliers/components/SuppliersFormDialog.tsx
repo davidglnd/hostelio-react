@@ -142,7 +142,7 @@ export const SuppliersFormDialog = ({ handleAddSupplier, selectedSupplier, dialo
             </DialogContent>
             <DialogTrigger
                 render={
-                    <Button variant="default" onClick={handleNewSupplier}>
+                    <Button variant="standard" onClick={handleNewSupplier}>
                         <Plus size={18} />
                         Nuevo proveedor
                     </Button>
