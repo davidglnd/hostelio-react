@@ -17,6 +17,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        standard: "bg-transparent hover:bg-gray-700 text-gray-50 hover:bg-gray-600 cursor-pointer",
         sidebar: "bg-transparent text-gray-300 hover:bg-gray-700 hover:text-gray-100 w-full justify-start transition-colors font-normal rounded-md cursor-pointer py-5 ",
       },
       size: {

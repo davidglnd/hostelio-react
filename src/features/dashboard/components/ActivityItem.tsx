@@ -1,12 +1,24 @@
-import type { Activity } from "../types/activity.types";
+import type { Expense } from "@/features/expenses/types/expense.types";
+import { Beer, Beef, Euro } from "lucide-react";
+type ActivityItemProps = Pick<
+    Expense,
+    "category" | "date" | "amount" | "paymentStatus"
+> & { supplier: string };
 
-export const ActivityItem = ({ supplier, category, date, amount, status, icon }: Omit<Activity, "id">) => {
-    const Icon = icon;
+export const ActivityItem = ({ supplier, category, date, amount, paymentStatus }: ActivityItemProps) => {
+
     return (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
                 <div className="rounded-full bg-gray-700 p-3 flex items-center justify-center ">
-                    <Icon className="text-amber-400" size={20} />
+                    {
+                        category === "Alimentación"
+                            ? <Beef className="text-amber-400" size={20} />
+                            : category === "Bebidas"
+                                ? <Beer className="text-amber-400" size={20} />
+                                : <Euro className="text-amber-400" size={20} />
+                    }
+
                 </div>
                 <div className="flex flex-col">
                     <h3 className="text-gray-50 font-medium">{supplier}</h3>
@@ -20,7 +32,7 @@ export const ActivityItem = ({ supplier, category, date, amount, status, icon }:
                     }
                 </p>
                 {
-                    status === "paid"
+                    paymentStatus === "paid"
                         ? <p className="text-green-700  text-sm font-medium">Pagado</p>
                         : <p className="text-amber-700 text-sm font-medium">Pendiente</p>
                 }
