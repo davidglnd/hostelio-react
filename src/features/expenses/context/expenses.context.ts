@@ -7,6 +7,7 @@ interface ExpensesContextValue {
 
     //metodos
     addExpense: (expense: Expense) => void
+    updatePaymentStatus: (expenseId: string) => void
 }
 
 export const ExpensesContext = createContext<ExpensesContextValue | undefined>(undefined);

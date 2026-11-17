@@ -22,7 +22,7 @@ export const ExpensesPage = () => {
 const ExpensesContent = ({ supplierId }: { supplierId: string | null }) => {
     const [paymentStatusFilter, setPaymentStatusFilter] = useState<"all" | "pending" | "paid">("all");
     const [pageTable, setPageTable] = useState<number>(1);
-    const { expenses } = useExpenses();
+    const { expenses, updatePaymentStatus } = useExpenses();
     const suppliersData = mockSuppliers;
     const expensesData = expenses.map((expense) => ({
         ...expense,
@@ -83,7 +83,7 @@ const ExpensesContent = ({ supplierId }: { supplierId: string | null }) => {
                             ? <p>No hay gastos con el estado seleccionado</p>
                             :
                             <div className="min-h-125">
-                                <ExpensesTable expensesData={paginatedExpenses} />
+                                <ExpensesTable expensesData={paginatedExpenses} updatePaymentStatus={updatePaymentStatus} />
                             </div>
 
             }

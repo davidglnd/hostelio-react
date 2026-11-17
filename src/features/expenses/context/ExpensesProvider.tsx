@@ -8,10 +8,19 @@ export const ExpensesProvider = ({ children }: PropsWithChildren) => {
     function addExpense(newExpense: Expense) {
         setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
     }
+    function updatePaymentStatus(expenseId: string) {
+        const editedPaymentStatusExpenses = expenses.map<Expense>((expense) => {
+            return expense.id === expenseId
+                ? { ...expense, paymentStatus: expense.paymentStatus === "pending" ? "paid" : "pending" }
+                : expense
+        })
+        setExpenses(editedPaymentStatusExpenses);
+    }
     return (
         <ExpensesContext value={{
             expenses: expenses,
             addExpense: addExpense,
+            updatePaymentStatus: updatePaymentStatus,
         }}>
             {children}
         </ExpensesContext>

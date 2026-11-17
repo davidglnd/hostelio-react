@@ -9,13 +9,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 import type { Expense } from "../types/expense.types";
+import { Banknote, BanknoteX } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 
 interface ExpensesTableProps {
-    expensesData: (Expense & { supplierName: string })[];
+    expensesData: (Expense & { supplierName: string })[],
+    updatePaymentStatus: (expenseId: string) => void,
 }
+export const ExpensesTable = ({ expensesData, updatePaymentStatus }: ExpensesTableProps) => {
 
-export const ExpensesTable = ({ expensesData }: ExpensesTableProps) => {
     return (
         <Table className="bg-gray-800 rounded-2xl text-gray-950">
             <TableHeader>
@@ -26,6 +29,7 @@ export const ExpensesTable = ({ expensesData }: ExpensesTableProps) => {
                     <TableHead className="text-gray-300">Concepto</TableHead>
                     <TableHead className="text-gray-300">Categoría</TableHead>
                     <TableHead className="text-gray-300">Estado</TableHead>
+                    <TableHead className="text-gray-300">Cambiar estado</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -53,6 +57,15 @@ export const ExpensesTable = ({ expensesData }: ExpensesTableProps) => {
                                             : "Pendiente"
                                     }
                                 </Badge>
+                                </TableCell>
+                                <TableCell >
+                                    <Button className="bg-transparent hover:bg-transparent" onClick={() => updatePaymentStatus(expense.id)}>
+                                        {
+                                            expense.paymentStatus === "paid"
+                                                ? <Banknote className="size-5" />
+                                                : <BanknoteX className="size-5" />
+                                        }
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         )
